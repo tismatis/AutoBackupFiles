@@ -11,6 +11,9 @@ namespace AutoBackupFiles
             List<string[]> parsedLines = new List<string[]>();
             foreach (var line in lines)
             {
+                if(line.StartsWith("#") || line == "" || line.StartsWith(" "))
+                    continue;
+                
                 parsedLines.Add(line.Split(';'));
             }
 
