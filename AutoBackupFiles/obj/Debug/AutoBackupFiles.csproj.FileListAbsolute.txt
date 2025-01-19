@@ -1,0 +1,6 @@
+C:\Users\Matis\RiderProjects\AutoBackupFiles\AutoBackupFiles\bin\Debug\AutoBackupFiles.exe
+C:\Users\Matis\RiderProjects\AutoBackupFiles\AutoBackupFiles\bin\Debug\AutoBackupFiles.pdb
+C:\Users\Matis\RiderProjects\AutoBackupFiles\AutoBackupFiles\obj\Debug\AutoBackupFiles.csproj.AssemblyReference.cache
+C:\Users\Matis\RiderProjects\AutoBackupFiles\AutoBackupFiles\obj\Debug\AutoBackupFiles.csproj.CoreCompileInputs.cache
+C:\Users\Matis\RiderProjects\AutoBackupFiles\AutoBackupFiles\obj\Debug\AutoBackupFiles.exe
+C:\Users\Matis\RiderProjects\AutoBackupFiles\AutoBackupFiles\obj\Debug\AutoBackupFiles.pdb
