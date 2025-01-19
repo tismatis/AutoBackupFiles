@@ -1,0 +1,49 @@
+﻿name: Build .NET Framework 3.5 Console App
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1
+
+      - name: Get last commit hash
+        id: get_commit
+        run: echo "LAST_COMMIT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Replace %VERSION% with last commit hash
+        run: |
+          $filePath = "AutoBackupFiles/Program.cs"
+          $content = Get-Content $filePath
+          $updatedContent = $content -replace "%VERSION%", "${{ env.LAST_COMMIT }}"
+          Set-Content $filePath $updatedContent
+        shell: pwsh
+
+      - name: Restore NuGet packages
+        run: nuget restore YourSolution.sln
+
+      - name: Build solution
+        run: msbuild YourSolution.sln /p:Configuration=Release
+
+      - name: Archive build artifacts
+        if: ${{ success() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: Build-Output
+          path: |
+            **/bin/Release/
