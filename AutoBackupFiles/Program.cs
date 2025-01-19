@@ -70,9 +70,6 @@ namespace AutoBackupFiles
                 Console.Write("&7Starting listing...");
                 foreach (string[] list in csv)
                 {
-                    if(list[0].StartsWith(" ") && list.Length == 1 || list[0] == "" || list[0].StartsWith("#") && list.Length == 1)
-                        continue;
-
                     switch(list[0])
                     {
                         case "folder":
@@ -95,10 +92,10 @@ namespace AutoBackupFiles
                                     dateformat = list[2];
                                     continue;
                                 default:
-                                    throw new Exception("Parsing error! An non reconized line has been readed.");
+                                    throw new Exception($"Parsing error! An non reconized line has been readed. '{list[1]}'");
                             }
                         default:
-                            throw new Exception("Parsing error! An non reconized line has been readed.");
+                            throw new Exception($"Parsing error! An non reconized line has been readed. '{list[0]}'");
                     }
                 }
 
