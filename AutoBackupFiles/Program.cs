@@ -2,23 +2,24 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace AutoBackupFiles
 {
     internal class Program
     {
-        private static bool _cmdMode = false;
+        private static bool _cmdMode;
         public static void Main(string[] args)
         {
             if(File.Exists("logs.txt"))
                 File.Delete("logs.txt");
             
+            File.WriteAllText("logs.txt", "");
+            
             string terminalName = Environment.GetEnvironmentVariable("TERM_PROGRAM") ?? 
                                   Environment.GetEnvironmentVariable("ComSpec") ?? 
                                   "Unknown";
-            _cmdMode = terminalName.EndsWith("cmd.exe");
+            _cmdMode = terminalName.Contains("cmd.exe");
             
             try
             {
@@ -34,7 +35,7 @@ namespace AutoBackupFiles
 " + $"Tismatis - Auto Backup Files - Version %VERSION%" + @"
 =================================================================").Substring(1));
                 if (args.Length == 0)
-                    throw new Exception("&4Please provide a path to the &lfile you want to backup&r!");
+                    throw new Exception("&4Please provide a path to the &lfile you want to backup&r&4!");
                 
                 if(args.Length > 2)
                     throw new Exception("&4Too many arguments provided!&r");
@@ -64,7 +65,7 @@ namespace AutoBackupFiles
                 Console.SetCursorPosition(0, Console.CursorTop - 1);
                 WriteConsole("&aReading and Basic Parsing complete!");
                 
-                string dateformat = "dd-mm-yyyy HH:mm:ss";
+                string dateformat = "dd-mm-yyyy_HH-mm-ss";
                 string destination = "";
                 Dictionary<string, ObjectRestore> objects = new Dictionary<string, ObjectRestore>();
 
@@ -235,14 +236,11 @@ namespace AutoBackupFiles
                     case 'r': // Reset
                         Console.ResetColor();
                         _k = false;
-                        break;
-                    case 'k':
-                        _k = true;
-                        break;
+                        return;
                     default:
                         break;
                 }
-
+            
             switch(colorCode)
             {
                 case '0':
