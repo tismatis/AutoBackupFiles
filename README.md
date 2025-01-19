@@ -16,6 +16,7 @@ Auto Backup Files is a C# application designed to automate the backup of specifi
     ```csv
     # Config
     config;date-format;dd-mm-yyyy HH--mm--ss
+    config;force-zip;true
     # Destination
     destination;C:/Path/To/Backup/%DATE%
     # Folders to backup

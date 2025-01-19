@@ -90,6 +90,48 @@ internal class Backup
         }
         Console.Write("&aBackup done &lsuccessfully&r&a!");
     }
+
+    public static void ZipBackup()
+    {
+        Console.Write("&7Starting backup...");
+        Console.Write("&7Creating temporary directory...");
+        string tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+        Directory.CreateDirectory(tempDir);
+        Console.Write("&aTemporary directory created!");
+        Console.Write("&7Starting backup...");
+        foreach(KeyValuePair<string, ObjectRestore> obj in _objects)
+        {
+            Console.Write($"&7Copying {obj.Key}...");
+            foreach(string[] path in obj.Value.Paths)
+            {
+                Console.Write($"&7Copying {path[1]}&r&7!");
+                switch(path[0])
+                {
+                    case "folder":
+                        CopyDirectory(path[1], Path.Combine(Path.Combine($"{tempDir}", obj.Key), Path.GetFileName(path[1])));
+                        break;
+                    case "file":
+                        CopyFile(path[1], Path.Combine(Path.Combine($"{tempDir}", obj.Key), Path.GetFileName(path[1])));
+                        break;
+                    default:
+                        throw new Exception("Parsing error! An non reconized line has been readed.");
+                }
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write($"&aCopied successfuly {path[1]}&r&a!");
+            }
+            Console.Write($"&7Writing list of backuped files for {obj.Key}...");
+            File.WriteAllText(Path.Combine(Path.Combine($"{tempDir}", obj.Key), "list_of_backuped_files.txt"), obj.Value.ToString());
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            Console.Write($"&aCopied successfuly {obj.Key}&r&a!                                      ");
+        }
+        Console.Write("&aBackup done &lsuccessfully&r&a!");
+        Console.Write("&7Creating zip file...");
+        ZipFile.CreateFromDirectory(tempDir, $"{_destination}.zip");
+        Console.Write("&aZip file created!");
+        Console.Write("&7Deleting temporary directory...");
+        Directory.Delete(tempDir, true);
+        Console.Write("&aTemporary directory deleted!");
+    }
     
     private static void CopyDirectory(string sourceDir, string destDir)
     {

@@ -63,7 +63,13 @@ internal static class Program
                 
             Backup.ListFiles(csv);
 
-            Backup.NativeBackup();
+            if (Backup.ForceZip)
+            {
+                Console.Write("&c&lWarning: &r&cForcing zip mode!&r");
+                Backup.ZipBackup();
+            }
+            else
+                Backup.NativeBackup();
         }catch(Exception ex)
         {
             Console.Write($"&4&lOno, an error has occured: &r&4{ex.Message}\n{ex.StackTrace}");
