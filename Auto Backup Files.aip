@@ -38,6 +38,7 @@
     <ROW Component="APPDIR" ComponentId="{EF76F147-5272-445F-96B7-F5F4F081217F}" Directory_="APPDIR" Attributes="0"/>
     <ROW Component="AutoBackupFiles.dll" ComponentId="{5778194D-A32F-4A1F-B1F5-03B905150EC5}" Directory_="APPDIR" Attributes="0" KeyPath="AutoBackupFiles.dll"/>
     <ROW Component="AutoBackupFiles.exe_1" ComponentId="{4AD90653-B477-4B00-943D-6C1C15573A90}" Directory_="APPDIR" Attributes="0" KeyPath="AutoBackupFiles.exe"/>
+    <ROW Component="AutoBackupFiles.runtimeconfig.json" ComponentId="{A53F2708-BFF9-4740-B524-FB5671163BC4}" Directory_="APPDIR" Attributes="0" KeyPath="AutoBackupFiles.runtimeconfig.json" Type="0"/>
     <ROW Component="ProductInformation" ComponentId="{9CC48384-B508-4636-BE0E-AB523D7102C8}" Directory_="APPDIR" Attributes="4" KeyPath="Version"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
@@ -48,6 +49,8 @@
     <ROW File="AutoBackupFiles.exe" Component_="AutoBackupFiles.exe_1" FileName="AUTOBA~1.EXE|AutoBackupFiles.exe" Version="65535.65535.65535.65535" Attributes="0" SourcePath="AutoBackupFiles\bin\Release\net8.0\AutoBackupFiles.exe" SelfReg="false" DigSign="true"/>
     <ROW File="AutoBackupFiles.pdb" Component_="AutoBackupFiles.exe_1" FileName="AUTOBA~1.PDB|AutoBackupFiles.pdb" Version="65535.65535.65535.65535" Attributes="0" SourcePath="AutoBackupFiles\bin\Release\net8.0\AutoBackupFiles.pdb" SelfReg="false"/>
     <ROW File="AutoBackupFiles.dll" Component_="AutoBackupFiles.dll" FileName="AUTOBA~1.DLL|AutoBackupFiles.dll" Version="65535.65535.65535.65535" Attributes="0" SourcePath="AutoBackupFiles\bin\Release\net8.0\AutoBackupFiles.dll" SelfReg="false"/>
+    <ROW File="AutoBackupFiles.runtimeconfig.json" Component_="AutoBackupFiles.runtimeconfig.json" FileName="AUTOBA~1.JSO|AutoBackupFiles.runtimeconfig.json" Version="65535.65535.65535.65535" Attributes="0" SourcePath="AutoBackupFiles\bin\Release\net8.0\AutoBackupFiles.runtimeconfig.json" SelfReg="false"/>
+    <ROW File="AutoBackupFiles.deps.json" Component_="AutoBackupFiles.runtimeconfig.json" FileName="AUTOBA~2.JSO|AutoBackupFiles.deps.json" Version="65535.65535.65535.65535" Attributes="0" SourcePath="AutoBackupFiles\bin\Release\net8.0\AutoBackupFiles.deps.json" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.AiPersistentPropComponent">
     <ROW Property="AI_INSTALLPERUSER" Registry="AI_INSTALLPERUSER" HklmSearch="AI_INSTALLPERUSER" HkcuSearch="AI_INSTALLPERUSER_1"/>
@@ -136,6 +139,7 @@
     <ROW Feature_="MainFeature" Component_="AI_INSTALLPERUSER"/>
     <ROW Feature_="MainFeature" Component_="AutoBackupFiles.exe_1"/>
     <ROW Feature_="MainFeature" Component_="AutoBackupFiles.dll"/>
+    <ROW Feature_="MainFeature" Component_="AutoBackupFiles.runtimeconfig.json"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiInstExSeqComponent">
     <ROW Action="AI_DOWNGRADE" Condition="AI_NEWERPRODUCTFOUND AND (UILevel &lt;&gt; 5)" Sequence="210"/>
