@@ -24,7 +24,7 @@ jobs:
 
       - name: Get last commit hash
         id: get_commit
-        run: echo "LAST_COMMIT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        run: $GITHUB_ENV = "LAST_COMMIT=$(git rev-parse --short HEAD)"
 
       - name: Replace %VERSION% with last commit hash
         run: |
@@ -46,4 +46,4 @@ jobs:
         with:
           name: Build-Output
           path: |
-            **/bin/Release/
+            **/bin/Release/*
