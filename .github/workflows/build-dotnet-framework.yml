@@ -47,3 +47,17 @@ jobs:
           name: Build-Output
           path: |
             **/bin/Release/*
+
+      - name: Install Advanced Installer
+        run: choco install advanced-installer -y
+
+      - name: Build MSI with Advanced Installer
+        run: '"C:\Program Files (x86)\Caphyon\Advanced Installer 20.8\bin\x86\AdvancedInstaller.com" /build "Auto Backup Files.aip"'
+        shell: cmd
+        
+      - name: Archive MSI
+        uses: actions/upload-artifact@v4
+        with:
+          name: MSI-Installer
+          path: |
+            Auto Backup Files-SetupFiles/Auto Backup Files.msi
