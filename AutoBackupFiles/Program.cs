@@ -15,6 +15,8 @@ namespace AutoBackupFiles
             
             File.WriteAllText("logs.txt", "");
             
+            Console.Initialize();
+            
             try
             {
                 Console.Write("&5&l" + (@"
@@ -48,6 +50,8 @@ namespace AutoBackupFiles
                         default:
                             throw new Exception("&4Invalid argument provided!&r");
                     }
+                
+                Console.Write(Console.CmdMode ? "&aCMD Compatibility Mode Enabled!" : "&aCMD Compatibility Mode Disabled!");
                 
                 if(!File.Exists(args[0]))
                     throw new Exception("&4The file you provided &ldoes not exist&r!");

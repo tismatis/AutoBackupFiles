@@ -9,15 +9,15 @@ namespace AutoBackupFiles
     {
         private static bool _k;
 #region CMD Compatibility Mode
-        private static bool _cmdMode;
+        public static bool CmdMode { get; private set; }
 
         public static void Initialize()
         {
-            _cmdMode = (Environment.GetEnvironmentVariable("TERM_PROGRAM") ??
+            CmdMode = (Environment.GetEnvironmentVariable("TERM_PROGRAM") ??
                         Environment.GetEnvironmentVariable("ComSpec") ??
                         "Unknown").Contains("cmd.exe");
         }
-        public static void ForceCmdMode(bool force) => _cmdMode = force;
+        public static void ForceCmdMode(bool force) => CmdMode = force;
 #endregion CMD Compatibility Mode
 #region System.Console Wrappers
         public static void Write(string message, bool disableTimezone = false) => WriteFormattedMessage($"{(!disableTimezone ? $"{DateTime.Now} &d&l>>&r " : "")}{message}");
@@ -48,7 +48,7 @@ namespace AutoBackupFiles
 
             System.Console.WriteLine(message.Substring(lastIndex));
             System.Console.ResetColor();
-            if(!_cmdMode)
+            if(!CmdMode)
                 System.Console.Write("\x1b[22m\x1b[23m\x1b[29m\x1b[24m");
             _k = false;
 
@@ -64,7 +64,7 @@ namespace AutoBackupFiles
 
         private static void GetConsoleColor(char colorCode)
         {
-            if(_cmdMode)
+            if(CmdMode)
                 switch (colorCode)
                 {
                     case 'l': // Bold
