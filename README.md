@@ -21,6 +21,8 @@ Auto Backup Files is a C# application designed to automate the backup of specifi
     destination;C:/Path/To/Backup/%DATE%
     # Folders to backup
     folder;FolderName;C:/Path/To/Folder
+    ignore-folder;FolderName;C:/Path/To/Folder/IgnoreMePlease
+    ignore-file;FolderName;C:/Path/To/Folder/private.txt
     file;FileName;C:/Path/To/File
     ```
 

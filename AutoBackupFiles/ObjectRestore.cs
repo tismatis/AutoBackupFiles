@@ -6,11 +6,13 @@ namespace AutoBackupFiles
     {
         public string Name;
         public List<string[]> Paths;
+        public List<string[]> Banned;
 
         public ObjectRestore(string name)
         {
             Name = name;
             Paths = new List<string[]>();
+            Banned = new List<string[]>();
         }
 
         public override string ToString()
