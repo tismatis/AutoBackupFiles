@@ -50,11 +50,11 @@ jobs:
           aip-path: 'Auto Backup Files.aip'
           aip-build-name: 'DefaultBuild'
           aip-package-name: 'setup.msi'
-          aip-output-dir: '${{ github.workspace }}\setup\setup.msi'
+          aip-output-dir: '${{ github.workspace }}\setup\'
         
       - name: Archive MSI
         uses: actions/upload-artifact@v4
         with:
           name: MSI-Installer
           path: |
-            setup.msi
+            '${{ github.workspace }}\setup\'
