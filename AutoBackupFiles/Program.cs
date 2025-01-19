@@ -8,7 +8,6 @@ namespace AutoBackupFiles
 {
     internal class Program
     {
-        public static string Version = "1.0";
         public static void Main(string[] args)
         {
             if(File.Exists("logs.txt"))
@@ -25,7 +24,7 @@ namespace AutoBackupFiles
    \ \_______\ \__\ \__\ \_______\ \__\\ \__\ \_______\ \__\   
     \|_______|\|__|\|__|\|_______|\|__| \|__|\|_______|\|__|   
 =================================================================
-" + $"Tismatis - Auto Backup Files - Version {Version}" + @"
+" + $"Tismatis - Auto Backup Files - Version %VERSION%" + @"
 =================================================================").Substring(1));
                 if (args.Length == 0)
                     throw new Exception("&4Please provide a path to the &lfile you want to backup&r!");
