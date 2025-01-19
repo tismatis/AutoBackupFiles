@@ -53,8 +53,9 @@ jobs:
           aip-output-dir: '${{ github.workspace }}\setup'
         
       - name: Archive MSI
+        if: ${{ success() }}
         uses: actions/upload-artifact@v4
         with:
           name: MSI-Installer
           path: |
-            '${{ github.workspace }}\setup\setup.msi'
+            **/setup/*
