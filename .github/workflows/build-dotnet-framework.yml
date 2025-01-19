@@ -22,15 +22,11 @@ jobs:
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1
 
-      - name: Get last commit hash
-        id: get_commit
-        run: $GITHUB_ENV = "LAST_COMMIT=$(git rev-parse --short HEAD)"
-
       - name: Replace %VERSION% with last commit hash
         run: |
           $filePath = "AutoBackupFiles/Program.cs"
           $content = Get-Content $filePath
-          $updatedContent = $content -replace "%VERSION%", "${{ env.LAST_COMMIT }}"
+          $updatedContent = $content -replace "%VERSION%", $(git rev-parse --short HEAD)
           Set-Content $filePath $updatedContent
         shell: pwsh
 
