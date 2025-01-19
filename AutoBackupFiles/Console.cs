@@ -22,9 +22,11 @@ namespace AutoBackupFiles
 #region System.Console Wrappers
         public static void Write(string message, bool disableTimezone = false) => WriteFormattedMessage($"{(!disableTimezone ? $"{DateTime.Now} &d&l>>&r " : "")}{message}");
         public static System.ConsoleKeyInfo ReadKey() => System.Console.ReadKey();
+        public static System.ConsoleKeyInfo ReadKey(bool intercept) => System.Console.ReadKey(intercept);
         public static void SetCursorPosition(int left, int top) => System.Console.SetCursorPosition(left, top);
         public static int CursorTop => System.Console.CursorTop;
         public static int CursorLeft => System.Console.CursorLeft;
+        public static bool KeyAvailable => System.Console.KeyAvailable;
 #endregion System.Console Wrappers
 #region Formatting
         private static void WriteFormattedMessage(string input)

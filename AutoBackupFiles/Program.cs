@@ -6,12 +6,12 @@ namespace AutoBackupFiles;
 
 internal static class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         if(File.Exists("logs.txt"))
             File.Delete("logs.txt");
             
-        File.WriteAllText("logs.txt", "");
+        await File.WriteAllTextAsync("logs.txt", "");
             
         Console.Initialize();
             
@@ -75,7 +75,19 @@ internal static class Program
             Console.Write($"&4&lOno, an error has occured: &r&4{ex.Message}\n{ex.StackTrace}");
         }
 
-        Console.Write("&7Press any key to &4exit&r&7...");
-        Console.ReadKey();
+        Console.Write("&7Press any key to &4exit&r&7 or wait 5 seconds...");
+        var task = Task.Run(() =>
+        {
+            for (int i = 0; i < 50; i++)
+            {
+                if (Console.KeyAvailable)
+                {
+                    Console.ReadKey(true);
+                    return;
+                }
+                Task.Delay(100).Wait();
+            }
+        });
+        await task;
     }
 }
