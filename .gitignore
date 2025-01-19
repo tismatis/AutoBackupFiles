@@ -1,5 +1,7 @@
 ﻿.idea/
 AutoBackupFiles/bin/
 AutoBackupFiles/obj/
+AutoBackupFiles/obj/Debug
 Auto Backup Files-cache/
 Auto Backup Files-SetupFiles/
+/AutoBackupFiles/obj

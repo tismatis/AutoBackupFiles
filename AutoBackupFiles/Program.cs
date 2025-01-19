@@ -2,16 +2,23 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace AutoBackupFiles
 {
     internal class Program
     {
+        private static bool _cmdMode = false;
         public static void Main(string[] args)
         {
             if(File.Exists("logs.txt"))
                 File.Delete("logs.txt");
+            
+            string terminalName = Environment.GetEnvironmentVariable("TERM_PROGRAM") ?? 
+                                  Environment.GetEnvironmentVariable("ComSpec") ?? 
+                                  "Unknown";
+            _cmdMode = terminalName.EndsWith("cmd.exe");
             
             try
             {
@@ -28,7 +35,25 @@ namespace AutoBackupFiles
 =================================================================").Substring(1));
                 if (args.Length == 0)
                     throw new Exception("&4Please provide a path to the &lfile you want to backup&r!");
+                
+                if(args.Length > 2)
+                    throw new Exception("&4Too many arguments provided!&r");
 
+                if(args.Length == 2)
+                    switch (args[1])
+                    {
+                        case "--force-special-chars":
+                            _cmdMode = false;
+                            WriteConsole("&aForcing special chars!");
+                            break;
+                        case "--force-normal-chars":
+                            _cmdMode = true;
+                            WriteConsole("&cForcing ban special chars!");
+                            break;
+                        default:
+                            throw new Exception("&4Invalid argument provided!&r");
+                    }
+                
                 if(!File.Exists(args[0]))
                     throw new Exception("&4The file you provided &ldoes not exist&r!");
 
@@ -180,7 +205,8 @@ namespace AutoBackupFiles
             // Print the remaining part of the message
             Console.WriteLine(message.Substring(lastIndex));
             Console.ResetColor();
-            Console.Write("\x1b[22m\x1b[23m\x1b[29m\x1b[24m");
+            if(!_cmdMode)
+                Console.Write("\x1b[22m\x1b[23m\x1b[29m\x1b[24m");
             _k = false;
 
             File.AppendAllText("logs.txt", total + message.Substring(lastIndex) + "\n");
@@ -195,6 +221,28 @@ namespace AutoBackupFiles
 
         private static void GetConsoleColor(char colorCode)
         {
+            if(_cmdMode)
+                switch (colorCode)
+                {
+                    case 'l': // Bold
+                        return;
+                    case 'i': // Italic
+                        return;
+                    case 's': // Strikethrough
+                        return;
+                    case 'u': // Underline
+                        return;
+                    case 'r': // Reset
+                        Console.ResetColor();
+                        _k = false;
+                        break;
+                    case 'k':
+                        _k = true;
+                        break;
+                    default:
+                        break;
+                }
+
             switch(colorCode)
             {
                 case '0':
