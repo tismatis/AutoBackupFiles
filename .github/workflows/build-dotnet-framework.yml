@@ -35,10 +35,10 @@ jobs:
         shell: pwsh
 
       - name: Restore NuGet packages
-        run: nuget restore YourSolution.sln
+        run: nuget restore AutoBackupFiles.sln
 
       - name: Build solution
-        run: msbuild YourSolution.sln /p:Configuration=Release
+        run: msbuild AutoBackupFiles.sln /p:Configuration=Release
 
       - name: Archive build artifacts
         if: ${{ success() }}
