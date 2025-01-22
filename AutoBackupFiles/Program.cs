@@ -77,6 +77,11 @@ internal static class Program
         }catch(Exception ex)
         {
             Console.Write($"&4&lOno, an error has occured: &r&4{ex.Message}\n{ex.StackTrace}");
+            
+            
+            Console.Write("&7Deleting temporary directory...");
+            Directory.Delete(Path.Combine(Path.GetTempPath(), "/AutoBackupFiles/"), true);
+            Console.Write("&aTemporary directory deleted!");
         }
 
         Console.Write("&7Press any key to &4exit&r&7 or wait 5 seconds...");
