@@ -16,35 +16,38 @@ internal class Backup
         _objects = new Dictionary<string, ObjectRestore>();
 
         Console.Write("&7Starting listing...");
-        foreach (string[] list in csv)
+        for (var line = 0; line < csv.Length; line++)
         {
-            switch(list[0])
+            string[] list = csv[line];
+            switch (list[0])
             {
                 case "folder":
-                    if(!_objects.ContainsKey(list[1]))
+                    if (!_objects.ContainsKey(list[1]))
                         _objects.Add(list[1], new ObjectRestore(list[1]));
                     _objects[list[1]].Paths.Add(["folder", list[2]]);
                     continue;
                 case "file":
-                    if(!_objects.ContainsKey(list[1]))
+                    if (!_objects.ContainsKey(list[1]))
                         _objects.Add(list[1], new ObjectRestore(list[1]));
-                    _objects[list[1]].Paths.Add([ "file", list[2] ]);
+                    _objects[list[1]].Paths.Add(["file", list[2]]);
                     continue;
                 case "ignore-folder":
-                    if(!_objects.ContainsKey(list[1]))
-                        throw new Exception("Listing error! An ignore-folder has been provided without being actually declared before!");
-                    _objects[list[1]].Banned.Add([ "folder", list[2] ]);
+                    if (!_objects.ContainsKey(list[1]))
+                        throw new Exception(
+                            "Listing error! An ignore-folder has been provided without being actually declared before!");
+                    _objects[list[1]].Banned.Add(["folder", list[2]]);
                     break;
                 case "ignore-file":
-                    if(!_objects.ContainsKey(list[1]))
-                        throw new Exception("Listing error! An ignore-file has been provided without being actually declared before!");
-                    _objects[list[1]].Banned.Add([ "file", list[2] ]);
+                    if (!_objects.ContainsKey(list[1]))
+                        throw new Exception(
+                            "Listing error! An ignore-file has been provided without being actually declared before!");
+                    _objects[list[1]].Banned.Add(["file", list[2]]);
                     break;
                 case "destination":
                     _destination = list[1];
                     continue;
                 case "config":
-                    switch(list[1])
+                    switch (list[1])
                     {
                         case "date-format":
                             _dateFormat = list[2];
@@ -53,13 +56,15 @@ internal class Backup
                             ForceZip = bool.Parse(list[2]);
                             continue;
                         default:
-                            throw new Exception($"Parsing error! An non reconized line has been readed. '{list[1]}'");
+                            throw new Exception(
+                                $"Parsing error! An non reconized line has been readed at line {line}, column 2. '{list[1]}'");
                     }
                 default:
-                    throw new Exception($"Parsing error! An non reconized line has been readed. '{list[0]}'");
+                    throw new Exception(
+                        $"Parsing error! An non reconized line has been readed at line {line}, column 1. '{list[0]}'");
             }
         }
-        
+
         _destination = _destination.Replace("%DATE%", DateTime.Now.ToString(_dateFormat));
         
         Console.SetCursorPosition(0, Console.CursorTop - 1);
