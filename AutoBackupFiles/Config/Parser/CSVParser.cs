@@ -28,6 +28,8 @@ namespace AutoBackupFiles
             Dictionary<string, OutputConfiguration> outputConfigurations = new Dictionary<string, OutputConfiguration>();
             Dictionary<string, ZIPConfiguration> zipConfigurations = new Dictionary<string, ZIPConfiguration>();
             Dictionary<string, ElementToBackup> toBackups = new Dictionary<string, ElementToBackup>();
+            Dictionary<string, FTPConfiguration> ftpConfigurations = new Dictionary<string, FTPConfiguration>();
+            Dictionary<string, SSHConfiguration> sshConfigurations = new Dictionary<string, SSHConfiguration>();
             
             Configuration cfg = new Configuration();
             
@@ -129,7 +131,7 @@ namespace AutoBackupFiles
                 }
             }
             
-            cfg.Finish(outputConfigurations.Values.ToList(), toBackups.Values.ToList(), zipConfigurations.Values.ToList());
+            cfg.Finish(outputConfigurations.Values.ToList(), toBackups.Values.ToList(), zipConfigurations.Values.ToList(), ftpConfigurations.Values.ToList(), sshConfigurations.Values.ToList());
             
             return cfg;
         }

@@ -70,6 +70,12 @@ internal static class Program
             
             foreach (var bCfg in cfg.ToZip)
                 OutputZip.Backup(tempDir, bCfg);
+
+            foreach (var bCfg in cfg.ToFTP)
+                OutputFTP.Backup(tempDir, bCfg);
+            
+            foreach (var bCfg in cfg.ToSSH)
+                OutputSSH.Backup(tempDir, bCfg);
             
             Console.Write("&7Deleting temporary directory...");
             Directory.Delete(tempDir, true);
