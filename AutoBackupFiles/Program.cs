@@ -76,6 +76,9 @@ internal static class Program
             }
             else
                 Backup.NativeBackup();
+            
+            if(Backup.ForceFtp)
+                Backup.FTPBackup();
         }catch(Exception ex)
         {
             Console.Write($"&4&lOno, an error has occured: &r&4{ex.Message}\n{ex.StackTrace}");

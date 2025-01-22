@@ -10,6 +10,11 @@ internal class Backup
     private static Dictionary<string, ObjectRestore>? _objects;
     
     public static bool ForceZip = false;
+    public static bool ForceFtp = true;
+    public static string FtpServer = "";
+    public static string FtpUsername = "";
+    public static string FtpPassword = "";
+    public static string FtpPath = "";
     
     public static void ListFiles(string[][] csv)
     {
@@ -54,6 +59,18 @@ internal class Backup
                             continue;
                         case "force-zip":
                             ForceZip = bool.Parse(list[2]);
+                            continue;
+                        case "ftp-server":
+                            FtpServer = list[2];
+                            continue;
+                        case "ftp-username":
+                            FtpUsername = list[2];
+                            continue;
+                        case "ftp-password":
+                            FtpPassword = list[2];
+                            continue;
+                        case "ftp-path":
+                            FtpPath = list[2];
                             continue;
                         default:
                             throw new Exception(
@@ -163,6 +180,13 @@ internal class Backup
         Console.Write("&7Deleting temporary directory...");
         Directory.Delete(tempDir, true);
         Console.Write("&aTemporary directory deleted!");
+    }
+
+    public static void FTPBackup()
+    {
+        Console.Write("&7Starting backup...");
+        FTPSupport.UploadFileToFtp(FtpServer, $"{_destination}.zip", $"{FtpPath}{Path.GetFileName($"{_destination}.zip")}", FtpUsername, FtpPassword);
+        Console.Write("&aBackup done &lsuccessfully&r&a!");
     }
     
     private static void CopyDirectory(string sourceDir, string destDir, List<string[]> list)
