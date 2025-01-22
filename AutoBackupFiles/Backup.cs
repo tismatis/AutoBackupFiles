@@ -1,4 +1,5 @@
 ﻿using System.IO.Compression;
+using FluentFTP;
 
 namespace AutoBackupFiles;
 
@@ -15,6 +16,7 @@ internal class Backup
     public static string FtpUsername = "";
     public static string FtpPassword = "";
     public static string FtpPath = "";
+    public static string FtpSecurity = "NoEncryption";
     
     public static void ListFiles(string[][] csv)
     {
@@ -72,6 +74,21 @@ internal class Backup
                         case "ftp-path":
                             FtpPath = list[2];
                             continue;
+                        case "ftp-security":
+                            switch (list[2])
+                            {
+                                case "NoEncryption":
+                                    FtpSecurity = list[2];
+                                    continue;
+                                case "Implicit":
+                                    FtpSecurity = list[2];
+                                    continue;
+                                case "Explicit":
+                                    FtpSecurity = list[2];
+                                    continue; 
+                                default:
+                                    throw new Exception($"Parsing error! Unknown ftp-security option: {list[2]}");
+                            }
                         default:
                             throw new Exception(
                                 $"Parsing error! An non reconized line has been readed at line {line}, column 2. '{list[1]}'");
@@ -185,7 +202,24 @@ internal class Backup
     public static void FTPBackup()
     {
         Console.Write("&7Starting backup...");
-        FTPSupport.UploadFileToFtp(FtpServer, $"{_destination}.zip", $"{FtpPath}{Path.GetFileName($"{_destination}.zip")}", FtpUsername, FtpPassword);
+        
+        FtpEncryptionMode mode;
+        switch (FtpSecurity)
+        {
+            case "NoEncryption":
+                mode = FtpEncryptionMode.None;
+                break;
+            case "Implicit":
+                mode = FtpEncryptionMode.Implicit;
+                break;
+            case "Explicit":
+                mode = FtpEncryptionMode.Explicit;
+                break;
+            default:
+                throw new Exception($"FTP Configuration Error! The encryption mode '{FtpSecurity}' is not supported.");
+        }
+        
+        FTPSupport.UploadFileToFtp(mode, FtpServer, $"{_destination}.zip", $"{FtpPath}{Path.GetFileName($"{_destination}.zip")}", FtpUsername, FtpPassword);
         Console.Write("&aBackup done &lsuccessfully&r&a!");
     }
     
