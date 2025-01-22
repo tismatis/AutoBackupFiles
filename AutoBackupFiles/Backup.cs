@@ -11,12 +11,18 @@ internal class Backup
     private static Dictionary<string, ObjectRestore>? _objects;
     
     public static bool ForceZip = false;
-    public static bool ForceFtp = true;
+    public static bool ForceFtp = false;
     public static string FtpServer = "";
     public static string FtpUsername = "";
     public static string FtpPassword = "";
     public static string FtpPath = "";
     public static string FtpSecurity = "NoEncryption";
+    public static bool ForceSftp = true;
+    public static string SftpServer = "";
+    public static string SftpUsername = "";
+    public static string SftpPassword = "";
+    public static string SftpPath = "";
+    public static string SftpKeyPath = "";
     
     public static void ListFiles(string[][] csv)
     {
@@ -62,6 +68,9 @@ internal class Backup
                         case "force-zip":
                             ForceZip = bool.Parse(list[2]);
                             continue;
+                        case "ftp-enabled":
+                            ForceFtp = bool.Parse(list[2]);
+                            continue;
                         case "ftp-server":
                             FtpServer = list[2];
                             continue;
@@ -89,6 +98,24 @@ internal class Backup
                                 default:
                                     throw new Exception($"Parsing error! Unknown ftp-security option: {list[2]}");
                             }
+                        case "sftp-enabled":
+                            ForceSftp = bool.Parse(list[2]);
+                            continue;
+                        case "sftp-server":
+                            SftpServer = list[2];
+                            continue;
+                        case "sftp-username":
+                            SftpUsername = list[2];
+                            continue;
+                        case "sftp-password":
+                            SftpPassword = list[2];
+                            continue;
+                        case "sftp-path":
+                            SftpPath = list[2];
+                            continue;
+                        case "sftp-key-path":
+                            SftpKeyPath = list[2];
+                            continue;
                         default:
                             throw new Exception(
                                 $"Parsing error! An non reconized line has been readed at line {line}, column 2. '{list[1]}'");
@@ -220,6 +247,15 @@ internal class Backup
         }
         
         FTPSupport.UploadFileToFtp(mode, FtpServer, $"{_destination}.zip", $"{FtpPath}{Path.GetFileName($"{_destination}.zip")}", FtpUsername, FtpPassword);
+        Console.Write("&aBackup done &lsuccessfully&r&a!");
+    }
+
+    public static void SFTPBackup()
+    {
+        Console.Write("&7Starting backup...");
+
+        SSHSupport.UploadFileToSFTP(SftpServer, $"{_destination}.zip", $"{SftpPath}{Path.GetFileName($"{_destination}.zip")}", SftpUsername, SftpPassword, SftpKeyPath);
+        
         Console.Write("&aBackup done &lsuccessfully&r&a!");
     }
     

@@ -5,9 +5,9 @@ namespace AutoBackupFiles;
 
 public static class FTPSupport
 {
-    public static void UploadFileToFtp(FtpEncryptionMode mode, string ftpUrl, string localFilePath, string remoteFilePath, string ftpUser, string ftpPassword)
+    public static void UploadFileToFtp(FtpEncryptionMode mode, string host, string localFilePath, string remoteFilePath, string ftpUser, string ftpPassword)
     {
-        using (var ftpClient = new FtpClient(ftpUrl, ftpUser, ftpPassword))
+        using (var ftpClient = new FtpClient(host, ftpUser, ftpPassword))
         {
             ftpClient.Config.EncryptionMode = mode;
             ftpClient.Config.ValidateAnyCertificate = true;

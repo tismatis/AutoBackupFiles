@@ -79,6 +79,9 @@ internal static class Program
             
             if(Backup.ForceFtp)
                 Backup.FTPBackup();
+            
+            if(Backup.ForceSftp)
+                Backup.SFTPBackup();
         }catch(Exception ex)
         {
             Console.Write($"&4&lOno, an error has occured: &r&4{ex.Message}\n{ex.StackTrace}");
