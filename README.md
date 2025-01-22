@@ -78,4 +78,4 @@ All operations are logged to a `logs.txt` file in the application's directory. T
 
 ## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+This project is licensed under the GNU v3 License. See the `LICENSE` file for details.
