@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using AutoBackupFiles.BackupMethods;
 
 namespace AutoBackupFiles;
 
@@ -60,22 +61,19 @@ internal static class Program
             if(!File.Exists(args[0]))
                 throw new Exception("&4The file you provided &ldoes not exist&r!");
 
-            Console.Write("&7Reading/Basic Parsing CSV file...");
-                
-            string[][] csv = CSVParser.Parse(args[0]);
-                
-            Console.SetCursorPosition(0, Console.CursorTop - 1);
-            Console.Write("&aReading and Basic Parsing complete!");
-                
-            Backup.ListFiles(csv);
+            Configuration cfg = CSVParser.GetConfiguration(args[0]);
 
-            if (Backup.ForceZip)
-            {
-                Console.Write("&c&lWarning: &r&cForcing zip mode!&r");
-                Backup.ZipBackup();
-            }
-            else
-                Backup.NativeBackup();
+            string tempDir = OutputTemp.Backup(cfg);
+
+            foreach (var bCfg in cfg.ToOutputs)
+                OutputFolder.Backup(tempDir, bCfg);
+            
+            foreach (var bCfg in cfg.ToZip)
+                OutputZip.Backup(tempDir, bCfg);
+            
+            Console.Write("&7Deleting temporary directory...");
+            Directory.Delete(tempDir, true);
+            Console.Write("&aTemporary directory deleted!");
         }catch(Exception ex)
         {
             Console.Write($"&4&lOno, an error has occured: &r&4{ex.Message}\n{ex.StackTrace}");
