@@ -156,7 +156,7 @@ internal class Backup
                 processedSize += new FileInfo(file).Length;
                 double progress = (double)processedSize / totalSize * 100;
                 Console.SetCursorPosition(0, Console.CursorTop - 1);
-                Console.Write($"&eCreating zip file... {progress:0.00}% complete! [{(processedSize / 1024.0 / 1024.0):0.00}Mo processed, {(totalSize - processedSize) / 1024.0 / 1024.0:0.00}Mo remaining]");
+                Console.Write($"&eCreating zip file... {progress:0.00}% complete! [{(processedSize / 1024.0 / 1024.0):0.00}Mo processed, {(totalSize - processedSize) / 1024.0 / 1024.0:0.00}Mo remaining]", Program.ForceSaveDownloadLog);
             }
         }
         Console.Write("&aZip file created!");

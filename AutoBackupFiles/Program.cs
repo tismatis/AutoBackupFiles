@@ -6,6 +6,7 @@ namespace AutoBackupFiles;
 
 internal static class Program
 {
+    public static bool ForceSaveDownloadLog = false;
     public static async Task Main(string[] args)
     {
         if(File.Exists("logs.txt"))
@@ -44,6 +45,11 @@ internal static class Program
                     case "--force-normal-chars":
                         Console.ForceCmdMode(true);
                         Console.Write("&cForcing ban special chars!");
+                        break;
+                    case "--force-save-download-log":
+                        ForceSaveDownloadLog = true;
+                        Console.Write("&cForcing save download log!");
+                        Console.Write("Really why you want save this?");
                         break;
                     default:
                         throw new Exception("&4Invalid argument provided!&r");

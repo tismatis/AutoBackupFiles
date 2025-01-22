@@ -34,6 +34,7 @@ Auto Backup Files is a C# application designed to automate the backup of specifi
 3. **Optional Arguments**: You can use the following optional arguments as the second argument:
     - `--force-special-chars`: Forces the use of special characters in the console output.
     - `--force-normal-chars`: Forces the use of normal characters in the console output.
+    - `--force-save-download-log`: Forces the saving in logs.txt of each line of the download status.
 
    Example:
     ```sh

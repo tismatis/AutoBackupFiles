@@ -29,7 +29,7 @@ namespace AutoBackupFiles
         public static bool KeyAvailable => System.Console.KeyAvailable;
 #endregion System.Console Wrappers
 #region Formatting
-        private static void WriteFormattedMessage(string input)
+        private static void WriteFormattedMessage(string input, bool dontWrite = false)
         {
             string total = "";
 
@@ -54,7 +54,8 @@ namespace AutoBackupFiles
                 System.Console.Write("\x1b[22m\x1b[23m\x1b[29m\x1b[24m");
             _k = false;
 
-            File.AppendAllText("logs.txt", total + message.Substring(lastIndex) + "\n");
+            if(!dontWrite)
+                File.AppendAllText("logs.txt", total + message.Substring(lastIndex) + "\n");
         }
 
         private static string GenerateCensoredShit(int length)
