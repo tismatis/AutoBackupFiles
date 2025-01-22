@@ -13,8 +13,11 @@ namespace AutoBackupFiles
             {
                 if(line.StartsWith("#") || line == "" || line.StartsWith(" "))
                     continue;
-                
-                parsedLines.Add(line.Split(';'));
+
+                var split = line.Split(';');
+                if (split[0] == "")
+                    continue;
+                parsedLines.Add(split);
             }
 
             return parsedLines.ToArray();
