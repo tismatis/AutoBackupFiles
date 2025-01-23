@@ -5,14 +5,16 @@ public static class OutputTemp
     public static string Backup(Configuration cfg)
     {
         Console.Write("&7Creating an temp folder...");
-        string destination = Path.Combine(Path.GetTempPath(), $"AutoBackupFiles/{GenerateRandomChars(16)}/");
+        string uniqueIdentifier = "";
+        GenerateRandomChars(16).ToList().ForEach(c => uniqueIdentifier += c);
+        string destination = Path.Combine(Path.GetTempPath(), $"AutoBackupFiles/{uniqueIdentifier}/");
         if(Directory.Exists(destination))
             Directory.Delete(destination, true);
         Directory.CreateDirectory(destination);
-        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+        Console.SetCursorPosition(0, Console.CursorTop - 1);
         Console.Write($"&aThe temp folder is at: {destination}.");
         
-        Console.Write("&7Starting backup...");
+        Console.Write("&7Starting backup into Temp Folder...");
 
         foreach(var obj in cfg.ToBackups)
         {
@@ -39,7 +41,7 @@ public static class OutputTemp
             Console.SetCursorPosition(0, Console.CursorTop - 1);
             Console.Write($"&aCopied successfuly {obj.Name}&r&a!                                      ");
         }
-        Console.Write("&aBackup done &lsuccessfully&r&a!");
+        Console.Write("&aBackup done &lsuccessfully&r&a in Temp Folder!");
         
         return destination;
     }

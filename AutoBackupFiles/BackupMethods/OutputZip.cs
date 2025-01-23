@@ -6,8 +6,7 @@ public static class OutputZip
 {
     public static void Backup(string tempDir, ZIPConfiguration cfg)
     {
-        Console.Write("&aBackup done &lsuccessfully&r&a!");
-        Console.Write("&7Creating zip file...");
+        Console.Write($"&7Creating zip file {cfg.Name}...");
 
         var files = Directory.GetFiles(tempDir, "*", SearchOption.AllDirectories);
         long totalSize = files.Sum(file => new FileInfo(file).Length);
@@ -26,7 +25,7 @@ public static class OutputZip
                 Console.Write($"&eCreating zip file... {progress:0.00}% complete! [{(processedSize / 1024.0 / 1024.0):0.00}Mo processed, {(totalSize - processedSize) / 1024.0 / 1024.0:0.00}Mo remaining]", Program.ForceSaveDownloadLog);
             }
         }
-        Console.Write("&aZip file created!");
+        Console.Write($"&aZip file created!");
     }
     
     public static void Backup(string tempDir, string pathAndName)
