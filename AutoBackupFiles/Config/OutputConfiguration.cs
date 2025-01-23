@@ -2,11 +2,13 @@
 
 public class OutputConfiguration
 {
+    public string Name;
     public string FolderName = "%DATE%";
     public string Path;
 
-    public OutputConfiguration(string path, string folderName)
+    public OutputConfiguration(string name, string path, string folderName)
     {
+        Name = name;
         FolderName = folderName;
         Path = path;
     }

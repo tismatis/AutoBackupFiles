@@ -2,8 +2,8 @@
 
 public class ZIPConfiguration
 {
-    public string Name = "%DATE%.ZIP";
-    public string FileName;
+    public string Name;
+    public string FileName = "%DATE%.ZIP";
     public string Path;
 
     public ZIPConfiguration(string name)

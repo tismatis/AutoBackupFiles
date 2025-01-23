@@ -4,7 +4,7 @@ public static class OutputFolder
 {
     public static void Backup(string tempDir, OutputConfiguration cfg)
     {
-        Console.Write($"&7Backup into Folder {cfg.FolderName}...");
+        Console.Write($"&7Backup into Folder {cfg.Name}...");
         if(!Directory.Exists(tempDir))
             throw new FileNotFoundException("Could not find the backup folder");
         if (!Directory.Exists($"{cfg.Path}/{cfg.FolderName}"))

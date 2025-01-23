@@ -60,7 +60,7 @@ namespace AutoBackupFiles
                         toBackups[list[1]].ToExclude.Add(["file", list[2]]);
                         continue;
                     case "destination":
-                        outputConfigurations.Add(list[1], new OutputConfiguration(list[1], ""));
+                        outputConfigurations.Add(list[1], new OutputConfiguration("Default Output", list[1], ""));
                         continue;
                     #endregion Obsolete
                     case "backup":
@@ -92,7 +92,7 @@ namespace AutoBackupFiles
                                 throw new Exception($"Configuration Parsing! An unknown settings has been given '{list[1]}'.");
                         }
                     case "output":
-                        outputConfigurations.Add(list[1], new OutputConfiguration(list[2], list.Length == 4 ? list[3] : ""));
+                        outputConfigurations.Add(list[1], new OutputConfiguration(list[1], list[2], list.Length == 4 ? list[3] : ""));
                         continue;
                     case "config":
                         switch (list[1])
