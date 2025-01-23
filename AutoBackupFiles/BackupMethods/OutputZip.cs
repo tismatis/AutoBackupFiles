@@ -6,7 +6,6 @@ public static class OutputZip
 {
     public static void Backup(string tempDir, ZIPConfiguration cfg)
     {
-        Console.Write("&aBackup done &lsuccessfully&r&a!");
         Console.Write("&7Creating zip file...");
 
         var files = Directory.GetFiles(tempDir, "*", SearchOption.AllDirectories);
