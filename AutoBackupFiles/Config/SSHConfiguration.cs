@@ -14,4 +14,10 @@ public class SSHConfiguration
     {
         Name = name;
     }
+
+    public void FixVars(string date)
+    {
+        FileName = FileName.Replace("%DATE%", date);
+        Path = Path.Replace("%DATE%", date);
+    }
 }

@@ -36,4 +36,10 @@ public class FTPConfiguration
         }
         Encryption = encryption;
     }
+
+    public void FixVars(string date)
+    {
+        FileName = FileName.Replace("%DATE%", date);
+        Path = Path.Replace("%DATE%", date);
+    }
 }

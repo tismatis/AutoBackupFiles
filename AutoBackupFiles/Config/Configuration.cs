@@ -17,19 +17,14 @@ public class Configuration
         ToFTP = ftpConfigurations.ToArray();
         ToSSH = sshConfigurations.ToArray();
 
+        string date = DateTime.Now.ToString(DateFormat);
         foreach (var output in toOutputs)
-            output.FixVars(DateTime.Now.ToString(DateFormat));
+            output.FixVars(date);
         foreach (var zip in zipConfigurations)
-            zip.FixVars(DateTime.Now.ToString(DateFormat));
+            zip.FixVars(date);
         foreach (var ftp in ftpConfigurations)
-        {
-            ftp.Path = ftp.Path.Replace("%DATE%", DateTime.Now.ToString(DateFormat));
-            ftp.Name = ftp.Path.Replace("%DATE%", DateTime.Now.ToString(DateFormat));
-        }
+            ftp.FixVars(date);
         foreach (var ssh in sshConfigurations)
-        {
-            ssh.Path = ssh.Path.Replace("%DATE%", DateTime.Now.ToString(DateFormat));
-            ssh.Name = ssh.Path.Replace("%DATE%", DateTime.Now.ToString(DateFormat));
-        }
+            ssh.FixVars(date);
     }
 }
