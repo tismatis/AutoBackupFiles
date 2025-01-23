@@ -125,6 +125,78 @@ namespace AutoBackupFiles
                                 throw new Exception(
                                     $"Parsing error! An non reconized line has been readed at line {line}, column 2. '{list[1]}'");
                         }
+                    case "ftp":
+                        switch (list[2])
+                        {
+                            case "host":
+                                if(!ftpConfigurations.ContainsKey(list[1]))
+                                    ftpConfigurations.Add(list[1], new FTPConfiguration(list[1]));
+                                ftpConfigurations[list[1]].Host = list[3];
+                                continue;
+                            case "encryption":
+                                if(!ftpConfigurations.ContainsKey(list[1]))
+                                    ftpConfigurations.Add(list[1], new FTPConfiguration(list[1]));
+                                ftpConfigurations[list[1]].SetEncryption(list[3]);
+                                continue;
+                            case "user":
+                                if(!ftpConfigurations.ContainsKey(list[1]))
+                                    ftpConfigurations.Add(list[1], new FTPConfiguration(list[1]));
+                                ftpConfigurations[list[1]].User = list[3];
+                                continue;
+                            case "password":
+                                if(!ftpConfigurations.ContainsKey(list[1]))
+                                    ftpConfigurations.Add(list[1], new FTPConfiguration(list[1]));
+                                ftpConfigurations[list[1]].Password = list[3];
+                                continue;
+                            case "path":
+                                if(!ftpConfigurations.ContainsKey(list[1]))
+                                    ftpConfigurations.Add(list[1], new FTPConfiguration(list[1]));
+                                ftpConfigurations[list[1]].Path = list[3];
+                                continue;
+                            case "filename":
+                                if(!ftpConfigurations.ContainsKey(list[1]))
+                                    ftpConfigurations.Add(list[1], new FTPConfiguration(list[1]));
+                                ftpConfigurations[list[1]].FileName = list[3];
+                                continue;
+                            default:
+                                throw new Exception($"Configuration Parsing! An unknown settings has been given '{list[1]}'.");
+                        }
+                    case "ssh":
+                        switch (list[2])
+                        {
+                            case "host":
+                                if(!sshConfigurations.ContainsKey(list[1]))
+                                    sshConfigurations.Add(list[1], new SSHConfiguration(list[1]));
+                                sshConfigurations[list[1]].Host = list[3];
+                                continue;
+                            case "key-path":
+                                if(!sshConfigurations.ContainsKey(list[1]))
+                                    sshConfigurations.Add(list[1], new SSHConfiguration(list[1]));
+                                sshConfigurations[list[1]].KeyPath = list[3];
+                                continue;
+                            case "user":
+                                if(!sshConfigurations.ContainsKey(list[1]))
+                                    sshConfigurations.Add(list[1], new SSHConfiguration(list[1]));
+                                sshConfigurations[list[1]].User = list[3];
+                                continue;
+                            case "password":
+                                if(!sshConfigurations.ContainsKey(list[1]))
+                                    sshConfigurations.Add(list[1], new SSHConfiguration(list[1]));
+                                sshConfigurations[list[1]].Password = list[3];
+                                continue;
+                            case "path":
+                                if(!sshConfigurations.ContainsKey(list[1]))
+                                    sshConfigurations.Add(list[1], new SSHConfiguration(list[1]));
+                                sshConfigurations[list[1]].Path = list[3];
+                                continue;
+                            case "filename":
+                                if(!sshConfigurations.ContainsKey(list[1]))
+                                    sshConfigurations.Add(list[1], new SSHConfiguration(list[1]));
+                                sshConfigurations[list[1]].FileName = list[3];
+                                continue;
+                            default:
+                                throw new Exception($"Configuration Parsing! An unknown settings has been given '{list[1]}'.");
+                        }
                     default:
                         throw new Exception(
                             $"Parsing error! An non reconized line has been readed at line {line}, column 1. '{list[0]}'");
