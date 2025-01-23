@@ -10,4 +10,10 @@ public class OutputConfiguration
         FolderName = folderName;
         Path = path;
     }
+
+    public void FixVars(string date)
+    {
+        FolderName = FolderName.Replace("%DATE%", date);
+        Path = Path.Replace("%DATE%", date);
+    }
 }

@@ -14,8 +14,8 @@ public class Configuration
         ToBackups = toBackups.ToArray();
 
         foreach (var output in toOutputs)
-            output.Path = output.Path.Replace("%DATE%", DateTime.Now.ToString(DateFormat));
+            output.FixVars(DateTime.Now.ToString(DateFormat));
         foreach (var zip in zipConfigurations)
-            zip.Path = zip.Path.Replace("%DATE%", DateTime.Now.ToString(DateFormat));
+            zip.FixVars(DateTime.Now.ToString(DateFormat));
     }
 }
