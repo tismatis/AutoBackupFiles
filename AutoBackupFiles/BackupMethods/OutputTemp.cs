@@ -5,7 +5,9 @@ public static class OutputTemp
     public static string Backup(Configuration cfg)
     {
         Console.Write("&7Creating an temp folder...");
-        string destination = Path.Combine(Path.GetTempPath(), $"AutoBackupFiles/{GenerateRandomChars(16)}/");
+        string uniqueIdentifier = "";
+        GenerateRandomChars(16).ToList().ForEach(c => uniqueIdentifier += c);
+        string destination = Path.Combine(Path.GetTempPath(), $"AutoBackupFiles/{uniqueIdentifier}/");
         if(Directory.Exists(destination))
             Directory.Delete(destination, true);
         Directory.CreateDirectory(destination);
