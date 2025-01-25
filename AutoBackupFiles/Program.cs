@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using AutoBackupFiles.BackupMethods;
 
@@ -61,21 +62,22 @@ internal static class Program
             if(!File.Exists(args[0]))
                 throw new Exception("&4The file you provided &ldoes not exist&r!");
 
-            Configuration cfg = CSVParser.GetConfiguration(args[0]);
+            GenericParser parser = new CSVParser();
+            Configuration cfg = parser.GetConfiguration(args[0]);
 
             string tempDir = OutputTemp.Backup(cfg);
 
             foreach (var bCfg in cfg.ToOutputs)
-                OutputFolder.Backup(tempDir, bCfg);
+                OutputFolder.Backup(tempDir, bCfg.Value);
             
             foreach (var bCfg in cfg.ToZip)
-                OutputZip.Backup(tempDir, bCfg);
+                OutputZip.Backup(tempDir, bCfg.Value);
 
             foreach (var bCfg in cfg.ToFTP)
-                OutputFTP.Backup(tempDir, bCfg);
+                OutputFTP.Backup(tempDir, bCfg.Value);
             
             foreach (var bCfg in cfg.ToSSH)
-                OutputSSH.Backup(tempDir, bCfg);
+                OutputSSH.Backup(tempDir, bCfg.Value);
             
             Console.Write("&7Deleting temporary directory...");
             Directory.Delete(tempDir, true);
@@ -86,7 +88,7 @@ internal static class Program
             
             
             Console.Write("&7Deleting temporary directory...");
-            Directory.Delete(Path.Combine(Path.GetTempPath(), "/AutoBackupFiles/"), true);
+            Directory.Delete(Path.Combine(Path.GetTempPath(), "AutoBackupFiles/"), true);
             Console.Write("&aTemporary directory deleted!");
         }
 

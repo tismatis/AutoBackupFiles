@@ -3,25 +3,26 @@
 public class Configuration
 {
     public string DateFormat = "dd-mm-yyyy_HH-mm-ss";
-    public OutputConfiguration[] ToOutputs;
-    public ElementToBackup[] ToBackups;
-    public ZIPConfiguration[] ToZip;
+    public Dictionary<string, OutputConfiguration> ToOutputs = new();
+    public Dictionary<string, ElementToBackup> ToBackups = new();
+    public Dictionary<string, ZIPConfiguration> ToZip = new();
     public FTPConfiguration[] ToFTP;
     public SSHConfiguration[] ToSSH;
 
-    public void Finish(List<OutputConfiguration> toOutputs, List<ElementToBackup> toBackups, List<ZIPConfiguration> zipConfigurations, List<FTPConfiguration> ftpConfigurations, List<SSHConfiguration> sshConfigurations)
+    public void Finish()
     {
-        ToOutputs = toOutputs.ToArray();
-        ToZip = zipConfigurations.ToArray();
-        ToBackups = toBackups.ToArray();
+        foreach (var output in ToOutputs)
+            output.Value.FixVars(DateTime.Now.ToString(DateFormat));
+        foreach (var zip in ToZip)
+            zip.Value.FixVars(DateTime.Now.ToString(DateFormat));
         ToFTP = ftpConfigurations.ToArray();
         ToSSH = sshConfigurations.ToArray();
 
         string date = DateTime.Now.ToString(DateFormat);
-        foreach (var output in toOutputs)
-            output.FixVars(date);
-        foreach (var zip in zipConfigurations)
-            zip.FixVars(date);
+        foreach (var output in ToOutputs)
+            output.Value.FixVars(date);
+        foreach (var zip in ToZip)
+            zip.Value.FixVars(date);
         foreach (var ftp in ftpConfigurations)
             ftp.FixVars(date);
         foreach (var ssh in sshConfigurations)

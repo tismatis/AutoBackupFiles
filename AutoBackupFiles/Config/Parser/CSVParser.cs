@@ -3,9 +3,9 @@ using System.IO;
 
 namespace AutoBackupFiles
 {
-    public class CSVParser
+    public class CSVParser : GenericParser
     {
-        private static string[][] Parse(string path)
+        private string[][] Parse(string path)
         {
             string[] lines = File.ReadAllLines(path);
             List<string[]> parsedLines = new List<string[]>();
@@ -23,192 +23,32 @@ namespace AutoBackupFiles
             return parsedLines.ToArray();
         }
 
-        private static Configuration GetConfiguration(string[][] csv)
+        private Configuration GetConfiguration(string[][] csv)
         {
-            Dictionary<string, OutputConfiguration> outputConfigurations = new Dictionary<string, OutputConfiguration>();
-            Dictionary<string, ZIPConfiguration> zipConfigurations = new Dictionary<string, ZIPConfiguration>();
-            Dictionary<string, ElementToBackup> toBackups = new Dictionary<string, ElementToBackup>();
-            Dictionary<string, FTPConfiguration> ftpConfigurations = new Dictionary<string, FTPConfiguration>();
-            Dictionary<string, SSHConfiguration> sshConfigurations = new Dictionary<string, SSHConfiguration>();
-            
             Configuration cfg = new Configuration();
             
             for (var line = 0; line < csv.Length; line++)
             {
                 string[] list = csv[line];
-                switch (list[0])
+                try
                 {
-                    #region Obsolete
-                    case "folder":
-                        if (!toBackups.ContainsKey(list[1]))
-                            toBackups.Add(list[1], new ElementToBackup(list[1]));
-                        toBackups[list[1]].ToInclude.Add(["folder", list[2]]);
-                        continue;
-                    case "file":
-                        if (!toBackups.ContainsKey(list[1]))
-                            toBackups.Add(list[1], new ElementToBackup(list[1]));
-                        toBackups[list[1]].ToInclude.Add(["file", list[2]]);
-                        continue;
-                    case "ignore-folder":
-                        if (!toBackups.ContainsKey(list[1]))
-                            throw new Exception(
-                                "Configuration Parsing! An ignore-folder has been provided without being actually declared before!");
-                        toBackups[list[1]].ToExclude.Add(["folder", list[2]]);
-                        continue;
-                    case "ignore-file":
-                        if (!toBackups.ContainsKey(list[1]))
-                            throw new Exception(
-                                "Configuration Parsing! An ignore-file has been provided without being actually declared before!");
-                        toBackups[list[1]].ToExclude.Add(["file", list[2]]);
-                        continue;
-                    case "destination":
-                        outputConfigurations.Add(list[1], new OutputConfiguration("Default Output", list[1], ""));
-                        continue;
-                    #endregion Obsolete
-                    case "backup":
-                        switch (list[1])
-                        {
-                            case "folder":
-                                if (!toBackups.ContainsKey(list[2]))
-                                    toBackups.Add(list[2], new ElementToBackup(list[2]));
-                                toBackups[list[2]].ToInclude.Add(["folder", list[3]]);
-                                continue;
-                            case "file":
-                                if (!toBackups.ContainsKey(list[1]))
-                                    toBackups.Add(list[2], new ElementToBackup(list[2]));
-                                toBackups[list[2]].ToInclude.Add(["file", list[3]]);
-                                continue;
-                            case "ignore-folder":
-                                if (!toBackups.ContainsKey(list[2]))
-                                    throw new Exception(
-                                        "Configuration Parsing! An ignore-folder has been provided without being actually declared before!");
-                                toBackups[list[2]].ToExclude.Add(["folder", list[3]]);
-                                continue;
-                            case "ignore-file":
-                                if (!toBackups.ContainsKey(list[2]))
-                                    throw new Exception(
-                                        "Configuration Parsing! An ignore-file has been provided without being actually declared before!");
-                                toBackups[list[2]].ToExclude.Add(["file", list[3]]);
-                                continue;
-                            default:
-                                throw new Exception($"Configuration Parsing! An unknown settings has been given '{list[1]}'.");
-                        }
-                    case "output":
-                        outputConfigurations.Add(list[1], new OutputConfiguration(list[1], list[2], list.Length == 4 ? list[3] : ""));
-                        continue;
-                    case "config":
-                        switch (list[1])
-                        {
-                            case "date-format":
-                                cfg.DateFormat = list[2];
-                                continue;
-                            case "zip":
-                                if(list.Length != 5)
-                                    throw new Exception("The zip file format is invalid!");
-                                
-                                switch (list[3])
-                                {
-                                    case "path":
-                                        if(!zipConfigurations.ContainsKey(list[2]))
-                                            zipConfigurations.Add(list[2], new ZIPConfiguration(list[2]));
-                                        zipConfigurations[list[2]].Path = list[3];
-                                        continue;
-                                    case "filename":
-                                        if(!zipConfigurations.ContainsKey(list[2]))
-                                            zipConfigurations.Add(list[2], new ZIPConfiguration(list[2]));
-                                        zipConfigurations[list[2]].FileName = list[3];
-                                        continue;
-                                    default:
-                                        throw new Exception("The zip file format is invalid!");
-                                }
-                            default:
-                                throw new Exception(
-                                    $"Parsing error! An non reconized line has been readed at line {line}, column 2. '{list[1]}'");
-                        }
-                    case "ftp":
-                        switch (list[2])
-                        {
-                            case "host":
-                                if(!ftpConfigurations.ContainsKey(list[1]))
-                                    ftpConfigurations.Add(list[1], new FTPConfiguration(list[1]));
-                                ftpConfigurations[list[1]].Host = list[3];
-                                continue;
-                            case "encryption":
-                                if(!ftpConfigurations.ContainsKey(list[1]))
-                                    ftpConfigurations.Add(list[1], new FTPConfiguration(list[1]));
-                                ftpConfigurations[list[1]].SetEncryption(list[3]);
-                                continue;
-                            case "user":
-                                if(!ftpConfigurations.ContainsKey(list[1]))
-                                    ftpConfigurations.Add(list[1], new FTPConfiguration(list[1]));
-                                ftpConfigurations[list[1]].User = list[3];
-                                continue;
-                            case "password":
-                                if(!ftpConfigurations.ContainsKey(list[1]))
-                                    ftpConfigurations.Add(list[1], new FTPConfiguration(list[1]));
-                                ftpConfigurations[list[1]].Password = list[3];
-                                continue;
-                            case "path":
-                                if(!ftpConfigurations.ContainsKey(list[1]))
-                                    ftpConfigurations.Add(list[1], new FTPConfiguration(list[1]));
-                                ftpConfigurations[list[1]].Path = list[3];
-                                continue;
-                            case "filename":
-                                if(!ftpConfigurations.ContainsKey(list[1]))
-                                    ftpConfigurations.Add(list[1], new FTPConfiguration(list[1]));
-                                ftpConfigurations[list[1]].FileName = list[3];
-                                continue;
-                            default:
-                                throw new Exception($"Configuration Parsing! An unknown settings has been given '{list[1]}'.");
-                        }
-                    case "ssh":
-                        switch (list[2])
-                        {
-                            case "host":
-                                if(!sshConfigurations.ContainsKey(list[1]))
-                                    sshConfigurations.Add(list[1], new SSHConfiguration(list[1]));
-                                sshConfigurations[list[1]].Host = list[3];
-                                continue;
-                            case "key-path":
-                                if(!sshConfigurations.ContainsKey(list[1]))
-                                    sshConfigurations.Add(list[1], new SSHConfiguration(list[1]));
-                                sshConfigurations[list[1]].KeyPath = list[3];
-                                continue;
-                            case "user":
-                                if(!sshConfigurations.ContainsKey(list[1]))
-                                    sshConfigurations.Add(list[1], new SSHConfiguration(list[1]));
-                                sshConfigurations[list[1]].User = list[3];
-                                continue;
-                            case "password":
-                                if(!sshConfigurations.ContainsKey(list[1]))
-                                    sshConfigurations.Add(list[1], new SSHConfiguration(list[1]));
-                                sshConfigurations[list[1]].Password = list[3];
-                                continue;
-                            case "path":
-                                if(!sshConfigurations.ContainsKey(list[1]))
-                                    sshConfigurations.Add(list[1], new SSHConfiguration(list[1]));
-                                sshConfigurations[list[1]].Path = list[3];
-                                continue;
-                            case "filename":
-                                if(!sshConfigurations.ContainsKey(list[1]))
-                                    sshConfigurations.Add(list[1], new SSHConfiguration(list[1]));
-                                sshConfigurations[list[1]].FileName = list[3];
-                                continue;
-                            default:
-                                throw new Exception($"Configuration Parsing! An unknown settings has been given '{list[1]}'.");
-                        }
-                    default:
-                        throw new Exception(
-                            $"Parsing error! An non reconized line has been readed at line {line}, column 1. '{list[0]}'");
+                    Keys[list[0]].OnParseCSV(ref cfg, list);
+                }catch(KeyNotFoundException)
+                {
+                    Keys["obsolete"].OnParseCSV(ref cfg, list);
+                }
+                catch(Exception ex)
+                {
+                    throw new Exception($"&cError on line {line}: {ex.Message}", ex);
                 }
             }
             
-            cfg.Finish(outputConfigurations.Values.ToList(), toBackups.Values.ToList(), zipConfigurations.Values.ToList(), ftpConfigurations.Values.ToList(), sshConfigurations.Values.ToList());
+            cfg.Finish();
             
             return cfg;
         }
 
-        public static Configuration GetConfiguration(string path)
+        public override Configuration GetConfiguration(string path)
         {
             Console.Write("&7Reading/Basic Parsing CSV file...");
             string[][] csv = Parse(path);
