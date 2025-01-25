@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using AutoBackupFiles.BackupMethods;
+﻿using AutoBackupFiles.BackupMethods;
 
 namespace AutoBackupFiles;
 
 internal static class Program
 {
     public static bool ForceSaveDownloadLog = false;
+    public static string PathConfigFile = "";
     public static async Task Main(string[] args)
     {
         if(File.Exists("logs.txt"))
@@ -31,39 +28,15 @@ internal static class Program
 =================================================================
 " + $"Tismatis - Auto Backup Files - Version %VERSION%" + @"
 =================================================================").Substring(1));
-            if (args.Length == 0)
-                throw new Exception("&4Please provide a path to the &lfile you want to backup&r&4!");
-                
-            if(args.Length > 2)
-                throw new Exception("&4Too many arguments provided!&r");
-
-            if(args.Length == 2)
-                switch (args[1])
-                {
-                    case "--force-special-chars":
-                        Console.ForceCmdMode(false);
-                        Console.Write("&aForcing special chars!");
-                        break;
-                    case "--force-normal-chars":
-                        Console.ForceCmdMode(true);
-                        Console.Write("&cForcing ban special chars!");
-                        break;
-                    case "--force-save-download-log":
-                        ForceSaveDownloadLog = true;
-                        Console.Write("&cForcing save download log!");
-                        Console.Write("Really why you want save this?");
-                        break;
-                    default:
-                        throw new Exception("&4Invalid argument provided!&r");
-                }
+            
+            ArgumentParser.Parse(args);
+            if(PathConfigFile == "")
+                throw new Exception("No path provided!");
                 
             Console.Write(Console.CmdMode ? "&aCMD Compatibility Mode Enabled!" : "&aCMD Compatibility Mode Disabled!");
-                
-            if(!File.Exists(args[0]))
-                throw new Exception("&4The file you provided &ldoes not exist&r!");
-
+            
             GenericParser parser = new CSVParser();
-            Configuration cfg = parser.GetConfiguration(args[0]);
+            Configuration cfg = parser.GetConfiguration(PathConfigFile);
 
             string tempDir = OutputTemp.Backup(cfg);
 
