@@ -6,9 +6,10 @@ Auto Backup Files is a C# application designed to automate the backup of specifi
 
 - Reads configuration from a CSV file
 - Supports backup of both files and folders
-- Customizable date format for destination paths
+- Fully modular and customizable
+- Able to push backups into a zip file
 - Logs all operations to a `logs.txt` file
-- Provides console output with color-coded messages
+- Provides console output with detailed messages
 
 ## Usage
 
