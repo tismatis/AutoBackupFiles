@@ -5,18 +5,28 @@ namespace AutoBackupFiles
 {
     public class CSVParser : GenericParser
     {
+        public static bool VerboseParsing;
+        
         private string[][] Parse(string path)
         {
             string[] lines = File.ReadAllLines(path);
             List<string[]> parsedLines = new List<string[]>();
             foreach (var line in lines)
             {
-                if(line.StartsWith("#") || line == "" || line.StartsWith(" "))
+                if (line.StartsWith("#") || line == "" || line.StartsWith(" "))
+                {
+                    if (VerboseParsing)
+                        Console.Write($"&7Skipping line: {line} (Empty or Comment)");
                     continue;
+                }
 
                 var split = line.Split(';');
                 if (split[0] == "")
+                {
+                    if (VerboseParsing)
+                        Console.Write($"&7Skipping line: {line} (Empty or Comment)");
                     continue;
+                }
                 parsedLines.Add(split);
             }
 
