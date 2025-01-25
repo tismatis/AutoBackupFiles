@@ -18,17 +18,17 @@ public static class OutputTemp
 
         foreach(var obj in cfg.ToBackups)
         {
-            Console.Write($"&7Copying {obj.Name}...");
-            foreach(string[] path in obj.ToInclude)
+            Console.Write($"&7Copying {obj.Value.Name}...");
+            foreach(string[] path in obj.Value.ToInclude)
             {
                 Console.Write($"&7Copying {path[1]}&r&7!");
                 switch(path[0])
                 {
                     case "folder":
-                        FileManagement.CopyDirectory(path[1], Path.Combine(Path.Combine($"{destination}", obj.Name), Path.GetFileName(path[1])), obj.ToExclude);
+                        FileManagement.CopyDirectory(path[1], Path.Combine(Path.Combine($"{destination}", obj.Value.Name), Path.GetFileName(path[1])), obj.Value.ToExclude);
                         break;
                     case "file":
-                        FileManagement.CopyFile(path[1], Path.Combine(Path.Combine($"{destination}", obj.Name), Path.GetFileName(path[1])), obj.ToExclude);
+                        FileManagement.CopyFile(path[1], Path.Combine(Path.Combine($"{destination}", obj.Value.Name), Path.GetFileName(path[1])), obj.Value.ToExclude);
                         break;
                     default:
                         throw new Exception("Parsing error! An non reconized line has been readed.");
@@ -36,10 +36,10 @@ public static class OutputTemp
                 Console.SetCursorPosition(0, Console.CursorTop - 1);
                 Console.Write($"&aCopied successfuly {path[1]}&r&a!");
             }
-            Console.Write($"&7Writing list of backuped files for {obj.Name}...");
-            File.WriteAllText(Path.Combine(Path.Combine($"{destination}", obj.Name), "list_of_files.txt"), obj.ToString());
+            Console.Write($"&7Writing list of backuped files for {obj.Value.Name}...");
+            File.WriteAllText(Path.Combine(Path.Combine($"{destination}", obj.Value.Name), "list_of_files.txt"), obj.ToString());
             Console.SetCursorPosition(0, Console.CursorTop - 1);
-            Console.Write($"&aCopied successfuly {obj.Name}&r&a!                                      ");
+            Console.Write($"&aCopied successfuly {obj.Value.Name}&r&a!                                      ");
         }
         Console.Write("&aBackup done &lsuccessfully&r&a in Temp Folder!");
         

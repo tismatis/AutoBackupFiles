@@ -1,4 +1,5 @@
-﻿using System.IO.Compression;
+﻿using System.Diagnostics;
+using System.IO.Compression;
 
 namespace AutoBackupFiles.BackupMethods;
 
@@ -12,7 +13,10 @@ public static class OutputZip
         long totalSize = files.Sum(file => new FileInfo(file).Length);
         long processedSize = 0;
 
-        using (var zip = ZipFile.Open($"{cfg.Path}/{cfg.Name}", ZipArchiveMode.Create))
+        Stopwatch stopwatch = new Stopwatch();
+        
+        stopwatch.Start();
+        using (var zip = ZipFile.Open($"{cfg.Path}/{cfg.FileName}", ZipArchiveMode.Create))
         {
             for (int i = 0; i < files.Length; i++)
             {
@@ -22,9 +26,10 @@ public static class OutputZip
                 processedSize += new FileInfo(file).Length;
                 double progress = (double)processedSize / totalSize * 100;
                 Console.SetCursorPosition(0, Console.CursorTop - 1);
-                Console.Write($"&eCreating zip file... {progress:0.00}% complete! [{(processedSize / 1024.0 / 1024.0):0.00}Mo processed, {(totalSize - processedSize) / 1024.0 / 1024.0:0.00}Mo remaining]", Program.ForceSaveDownloadLog);
+                Console.Write($"&eCreating zip file... [{progress:0.00}% {Math.Round(processedSize*100f/Math.Round(stopwatch.ElapsedMilliseconds*1000f))/100}Mo/s]", Program.ForceSaveDownloadLog);
             }
         }
+        stopwatch.Stop();
         Console.Write($"&aZip file created!");
     }
 }
