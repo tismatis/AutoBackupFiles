@@ -6,9 +6,10 @@ Auto Backup Files is a C# application designed to automate the backup of specifi
 
 - Reads configuration from a CSV file
 - Supports backup of both files and folders
-- Customizable date format for destination paths
+- Fully modular and customizable
+- Able to push backups into a zip file
 - Logs all operations to a `logs.txt` file
-- Provides console output with color-coded messages
+- Provides console output with detailed messages
 
 ## Usage
 
@@ -16,48 +17,37 @@ Auto Backup Files is a C# application designed to automate the backup of specifi
     ```csv
     # Config
     config;date-format;dd-mm-yyyy HH--mm--ss
-    config;force-zip;true
     # Destination
-    destination;C:/Path/To/Backup/%DATE%
+    output;folder;Main Output;C:/Path/To/Backup/%DATE%
     # Folders to backup
-    folder;FolderName;C:/Path/To/Folder
-    ignore-folder;FolderName;C:/Path/To/Folder/IgnoreMePlease
-    ignore-file;FolderName;C:/Path/To/Folder/private.txt
-    file;FileName;C:/Path/To/File
+    backup;folder;FolderName;C:/Path/To/Folder
+    backup;ignore-folder;FolderName;C:/Path/To/Folder/IgnoreMePlease
+    backup;ignore-file;FolderName;C:/Path/To/Folder/private.txt
+    backup;file;FileName;C:/Path/To/File
     ```
 
 2. **Run the Application**: Execute the application from the command line, providing the path to the CSV configuration file as an argument:
     ```sh
-    AutoBackupFiles.exe config.csv
+    AutoBackupFiles.exe --path=config.csv
     ```
 
 3. **Optional Arguments**: You can use the following optional arguments as the second argument:
-    - `--force-special-chars`: Forces the use of special characters in the console output.
-    - `--force-normal-chars`: Forces the use of normal characters in the console output.
-    - `--force-save-download-log`: Forces the saving in logs.txt of each line of the download status.
-
+    - `--force-special-chars=(true/false)`: Forces the use of special characters in the console output.
+    - `--force-save-downloads=(true/false)`: Forces the saving in logs.txt of each line of the download status.
+    - `--verbose-csv-parsing=(true/false)`: Enables verbose logging of the CSV parsing.
+    - `--help`: Displays the help message.
    Example:
     ```sh
-    AutoBackupFiles.exe config.csv --force-special-chars
+    AutoBackupFiles.exe --path=config.csv --force-special-chars=true --verbose-csv-parsing=true
     ```
 
 ## Configuration File Format
 
-- **Config Section**: Define global settings such as date format.
-    ```csv
-    config;date-format;dd-mm-yyyy HH--mm--ss
-    ```
-
-- **Destination Section**: Specify the backup destination path. The `%DATE%` placeholder will be replaced with the current date and time.
-    ```csv
-    destination;C:/Path/To/Backup/%DATE%
-    ```
-
-- **Folders and Files to Backup**: List the folders and files to be backed up.
-    ```csv
-    folder;FolderName;C:/Path/To/Folder
-    file;FileName;C:/Path/To/File
-    ```
+Please check each md files in the `wiki` folder for more information about the configuration file format.
+* [backup](wiki/backup.md)
+* [config](wiki/config.md)
+* [obsolete](wiki/obsolete.md) *Note: please don't use this tag, he is just here for compatibility reasons.*
+* [output](wiki/output.md)
 
 ## Example
 
