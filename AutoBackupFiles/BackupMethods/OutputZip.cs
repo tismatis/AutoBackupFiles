@@ -5,9 +5,11 @@ namespace AutoBackupFiles.BackupMethods;
 
 public static class OutputZip
 {
-    public static void Backup(string tempDir, ZIPConfiguration cfg)
+    public static void Backup(string tempDir, ZIPConfiguration cfg) => Backup(tempDir, Path.Combine(cfg.Path, cfg.FileName), cfg.Name);
+    
+    public static void Backup(string tempDir, string pathAndName, string name = "")
     {
-        Console.Write($"&7Creating zip file {cfg.Name}...");
+        Console.Write($"&7Creating zip file{(String.IsNullOrEmpty(name) ? "" : $" {name}")}...");
 
         var files = Directory.GetFiles(tempDir, "*", SearchOption.AllDirectories);
         long totalSize = files.Sum(file => new FileInfo(file).Length);
@@ -16,7 +18,7 @@ public static class OutputZip
         Stopwatch stopwatch = new Stopwatch();
         
         stopwatch.Start();
-        using (var zip = ZipFile.Open($"{cfg.Path}/{cfg.FileName}", ZipArchiveMode.Create))
+        using (var zip = ZipFile.Open($"{pathAndName}", ZipArchiveMode.Create))
         {
             for (int i = 0; i < files.Length; i++)
             {
@@ -30,6 +32,6 @@ public static class OutputZip
             }
         }
         stopwatch.Stop();
-        Console.Write($"&aZip file created!");
+        Console.Write("&aZip file created!");
     }
 }

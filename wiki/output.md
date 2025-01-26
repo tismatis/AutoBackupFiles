@@ -15,3 +15,25 @@
 |--------|------|------|----------|-------|
 | output | zip  | *    | path     | *     |
 | output | zip  | *    | filename | *     |
+
+### FTP Output
+
+| Output | Type | Name | Command    | Value |
+|--------|------|------|------------|-------|
+| output | ftp  | *    | host       | *     |
+| output | ftp  | *    | encryption | *     |
+| output | ftp  | *    | user       | *     |
+| output | ftp  | *    | password   | *     |
+| output | ftp  | *    | path       | *     |
+| output | ftp  | *    | filename   | *     |
+
+### SSH Output
+
+| Output | Type | Name | Command  | Value |
+|--------|------|------|----------|-------|
+| output | ssh  | *    | host     | *     |
+| output | ssh  | *    | keypath  | *     |
+| output | ssh  | *    | user     | *     |
+| output | ssh  | *    | password | *     |
+| output | ssh  | *    | path     | *     |
+| output | ftp  | *    | filename | *     |
